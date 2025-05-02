@@ -1,10 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  output: 'standalone',
+  images: {
+    domains: ['images.unsplash.com'],
+  },
 };
 
-// added by create cloudflare to enable calling `getCloudflareContext()` in `next dev`
-const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare');
-initOpenNextCloudflareForDev();
-
-module.exports = nextConfig; 
+// Import the Cloudflare adapter dynamically
+import('@opennextjs/cloudflare').then(({ default: cloudflare }) => {
+  module.exports = cloudflare(nextConfig);
+}); 
